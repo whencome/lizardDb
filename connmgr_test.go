@@ -1,7 +1,6 @@
-package test
+package lizardDb
 
 import (
-	"github.com/whencome/lizardDb"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"fmt"
@@ -15,7 +14,7 @@ var myConnMgr *MyConnManager
 func init() {
 	myConnMgr = NewMyConnManager()
 	// 注册连接管理器
-	lizardDb.RegisterConnectionManager(myConnMgr)
+	RegisterConnectionManager(myConnMgr)
 }
 
 // 定义一个ConnectionManager

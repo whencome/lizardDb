@@ -1,7 +1,7 @@
-package orm
+package lizardDb
 
 import (
-	"github.com/whencome/lizardDb"
+	"github.com/whencome/lizardDb/query"
 	"github.com/whencome/lizardDb/types"
 	"reflect"
 )
@@ -10,14 +10,15 @@ type ObjectManager struct {
 	Meta 					*MetaData
 	Obj 					DbObject
 	UseReadConn   			bool		// 是否使用读连接
+	Querier					*query.Querier	// 查询对象
 }
 
 // 创建一个新的ObjectManager
 func NewObjectManager(o DbObject) *ObjectManager {
 	om := &ObjectManager{
 		UseReadConn : true,
-		Meta : NewMetaData(),
-		Obj : o,
+		Meta 		: NewMetaData(),
+		Obj 		: o,
 	}
 	om.Resolve(o)
 	return om
@@ -70,7 +71,7 @@ func (om *ObjectManager) GetFieldPropertyName(field string) string {
 
 // 获取数据库名称
 func (om *ObjectManager) GetDbName() string {
-	return om.Meta.DbName
+	return om.Meta.DatabaseName
 }
 
 // 获取数据库名称
@@ -132,7 +133,7 @@ func (om *ObjectManager) BindBatch(result []interface{}, rows []map[string]*type
 // 根据原始的sql，查询一条数据
 func (om *ObjectManager) FetchSimple(querySql string, params ...interface{}) (*types.Value, error) {
 	// 查询
-	executor := lizardDb.NewSqlExecutor(om.UseReadConn)
+	executor := NewSqlExecutor(om.UseReadConn)
 	result, err := executor.QueryRawScalar(om.GetDbName(), querySql, params...)
 	if err != nil {
 		return nil, err
@@ -143,7 +144,7 @@ func (om *ObjectManager) FetchSimple(querySql string, params ...interface{}) (*t
 // 根据原始的sql，查询一条数据
 func (om *ObjectManager) FetchOne(querySql string, params ...interface{}) (interface{}, error) {
 	// 查询
-	executor := lizardDb.NewSqlExecutor(om.UseReadConn)
+	executor := NewSqlExecutor(om.UseReadConn)
 	rowData, err := executor.QueryRawRow(om.GetDbName(), querySql, params...)
 	if err != nil {
 		return nil, err
@@ -157,7 +158,7 @@ func (om *ObjectManager) FetchOne(querySql string, params ...interface{}) (inter
 // 根据原始的sql，查询所有数据
 func (om *ObjectManager) FetchAll(querySql string, params ...interface{}) ([]interface{}, error) {
 	// 查询
-	executor := lizardDb.NewSqlExecutor(om.UseReadConn)
+	executor := NewSqlExecutor(om.UseReadConn)
 	rowsData, err := executor.QueryRawRows(om.GetDbName(), querySql, params...)
 	if err != nil {
 		return nil, err

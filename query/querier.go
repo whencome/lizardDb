@@ -9,10 +9,14 @@ import (
 
 // 查询对象
 type Querier interface {
+	// 获取数据库名称
 	GetDbName() string
+	// 获取执行的命令
 	GetCommand() string
+	// 获取查询SQL
 	GetQuery() (string, error)
-	GetFields() []string
+	// GetFields() []string
+	// 获取查询参数
 	GetParams() *QueryParams
 }
 

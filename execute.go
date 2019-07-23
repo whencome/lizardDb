@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"regexp"
 	"strings"
+	"errors"
 	"github.com/whencome/lizardDb/types"
 )
 
@@ -30,7 +31,13 @@ func (se *SqlExecutor) Write() {
 	se.UseReadConn = false
 }
 
+// connect to the database which the dbName mapped to
 func (se *SqlExecutor) Connect(dbName string) (*sql.DB, error) {
+	// check whether is a connection manager registered or not
+	if DbManager == nil {
+		return nil, errors.New("new connection manager registered")
+	}
+	// get a connection
 	if se.UseReadConn {
 		return DbManager.GetReadConn(dbName)
 	}

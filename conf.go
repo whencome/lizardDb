@@ -1,4 +1,4 @@
-package orm
+package lizardDb
 
 // 全局参数设置
 var TimeFormat = "2006-01-02 15:04:05"

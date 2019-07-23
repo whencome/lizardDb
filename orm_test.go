@@ -1,22 +1,24 @@
 package lizardDb
 
+/**
+ * 测试命令：go test -v defines.go conf.go lizard_db.go connmgr.go connmgr_test.go execute.go orm.go orm_manager.go orm_test.go
+ */
+
 import (
-	_ "github.com/whencome/lizardDb/test"
-	"github.com/whencome/lizardDb/orm"
 	"testing"
 	"fmt"
 )
 
 type Book struct {
-	DatabaseName 	orm.DatabaseName 	`orm:"test"`
-	TableName 		orm.TableName 		`orm:"book"`
+	DatabaseName 	DatabaseName 		`orm:"test"`
+	TableName 		TableName 			`orm:"book"`
 	Id 				int 				`orm:"id"`
 	Name 			string 				`orm:"name"`
 	Author 			string 				`orm:"author"`
 	Price 			float64 			`orm:"price"`
 }
 
-func (b *Book) New() *Book {
+func (b *Book) New() DbObject {
 	return &Book{}
 }
 
@@ -32,7 +34,7 @@ func (b *Book) GetTableName() string {
 func TestORM_FetchOneOnRaw(t *testing.T) {
 	var book *Book = &Book{}
 	querySql := "select * from book where id = ?"
-	om := orm.NewObjectManager(book)
+	om := NewObjectManager(book)
 	data, err := om.Read().FetchOne(querySql, 1)
 	if err != nil {
 		t.Fatal(err)
@@ -44,7 +46,7 @@ func TestORM_FetchOneOnRaw(t *testing.T) {
 func TestORM_FetchAllOnRaw(t *testing.T) {
 	var book *Book = &Book{}
 	querySql := "select * from book"
-	om := orm.NewObjectManager(book)
+	om := NewObjectManager(book)
 	books, err := om.Read().FetchAll(querySql)
 	if err != nil {
 		t.Fatal(err)

@@ -1,4 +1,4 @@
-package orm
+package lizardDb
 
 import (
 	"strings"
@@ -67,13 +67,11 @@ func (ot *OrmTag) getFieldName() string {
 
 func NewMetaData() *MetaData {
 	return &MetaData{
-		RawData : make(map[string]interface{}),
-		FieldPropertyMappings : make(map[string]string),
-		PropertyFieldMappings : make(map[string]string),
-		PropertyOrmTags : make(map[string]*OrmTag),
-		DbName : "",
-		TableName : "",
+		RawData 				: make(map[string]interface{}),
+		FieldPropertyMappings 	: make(map[string]string),
+		PropertyFieldMappings 	: make(map[string]string),
+		PropertyOrmTags 		: make(map[string]*OrmTag),
+		DatabaseName 			: "",
+		TableName 				: "",
 	}
 }
-
-
